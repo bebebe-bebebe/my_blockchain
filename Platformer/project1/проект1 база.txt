@@ -1,0 +1,66 @@
+Sprite бобик;
+PImage box_block;
+PImage brown_block;
+PImage grass_dirt_block;
+PImage red_block;
+ArrayList<Sprite> platforms;
+final static float SPRITE_SIZE=50;
+final static float SPRITE_SCALE = SPRITE_SIZE/128;
+final static float MOVE_SPEED = 2;
+
+void setup(){
+  int col=0;
+  size(800,600);
+  бобик = new Sprite("img/бобик.png",100,100,1);
+  box_block = loadImage("img/box_block.png");
+  brown_block = loadImage("img/brown_block.png");
+  grass_dirt_block = loadImage("img/grass_dirt_block.png");
+  red_block = loadImage("img/red_block.png");
+  бобик.set_step_x(0);
+  бобик.set_step_y(0);
+  бобик.set_pos_x(100);
+  бобик.set_pos_y(100);
+  platforms = new ArrayList<Sprite>();
+}
+
+void draw(){
+  background(255,255,255);
+  бобик.show();
+  бобик.update_pos();
+}
+void keyPressed(){
+  if(keyCode == RIGHT){
+    бобик.set_step_x(1);
+  }else if(keyCode == LEFT){
+    бобик.set_step_x(-1);
+  }else if(keyCode == UP){
+    бобик.set_step_y(-1);
+  }else if(keyCode == DOWN){
+    бобик.set_step_y(1);
+  }
+}
+void keyReleased(){
+  if(keyCode == RIGHT){
+    бобик.set_step_x(MOVE_SPEED);
+  }else if(keyCode == LEFT){
+    бобик.set_step_x(-MOVE_SPEED);
+  }else if(keyCode == UP){
+    бобик.set_step_y(-MOVE_SPEED);
+  }else if(keyCode == DOWN){
+    бобик.set_step_y(MOVE_SPEED);
+  }
+}
+
+void createPlatforms(String filename) {
+  String[] lines = loadStrings(filename);
+  for (int row = 0; row < lines.length; row++) {
+    String[] cells = split(lines[row], ";");
+    for (int col = 0; col < cells.length; col++) {
+      if (cells[col].equals("1")) {
+        Sprite sprite = new Sprite(box_block, SPRITE_SCALE);
+        sprite.set_pos_x(SPRITE_SIZE / 2 + col * SPRITE_SIZE);
+        sprite.set_pos_y(SPRITE_SIZE / 2 + row * SPRITE_SIZE);
+      }
+    }
+  }
+}
